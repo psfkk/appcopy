@@ -33,7 +33,7 @@ export async function generateWatercolourPainting(imageDataUrl: string): Promise
     },
   };
 
-  const prompt = `const prompt = `Transform this building's image into a traditional Korean Minhwa painting. Use bold outlines and vibrant, flat colors. Add a tiny signature that says "Gemini"`;
+  const prompt = `Transform this building's image into a traditional Korean Minhwa painting. Use bold outlines and vibrant, flat colors. Add a tiny signature that says "Gemini"`;
     
   const textPart = {
     text: prompt,
