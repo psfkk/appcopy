@@ -1,10 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import html2canvas from 'html2canvas';
-import { generateMinhwaPainting } from './geminiService'; // 민화로 하고 싶을 경우
-// import { generatePencilSketch } from './geminiService'; // 연필 스케치로 하고 싶을 경우
+import { generateMinhwaPainting } from './geminiService';
 import { Loader } from '@googlemaps/js-api-loader';
 
-// 🚨 이 부분은 Render.com의 환경 변수(Environment Variable)에 설정해야 합니다.
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY || "";
 
 const loader = new Loader({
@@ -20,10 +18,8 @@ const MinhwaApp: React.FC = () => {
     const [mapInitialized, setMapInitialized] = useState<boolean>(false);
     const [isGeneratingPainting, setIsGeneratingPainting] = useState<boolean>(false);
     const [painting, setPainting] = useState<string>('');
-    const [capturedMapImage, setCapturedMapImage] = useState<string>('');
 
     const mapRef = useRef<HTMLDivElement>(null);
-    const mapInstanceRef = useRef<google.maps.Map | null>(null);
     const autocompleteRef = useRef<HTMLInputElement>(null);
 
     const initMap = useCallback(async (location: google.maps.LatLngLiteral) => {
@@ -41,7 +37,7 @@ const MinhwaApp: React.FC = () => {
             fullscreenControl: false,
             zoomControl: true,
         };
-        mapInstanceRef.current = new Map(mapRef.current, mapOptions);
+        new Map(mapRef.current, mapOptions);
         setMapInitialized(true);
     }, []);
 
@@ -93,9 +89,7 @@ const MinhwaApp: React.FC = () => {
         try {
             const canvas = await html2canvas(mapRef.current, { useCORS: true, allowTaint: true });
             const imageDataUrl = canvas.toDataURL('image/png');
-            setCapturedMapImage(imageDataUrl);
             
-            // 🚨 민화 또는 연필 스케치 함수를 호출합니다.
             const paintingDataUrl = await generateMinhwaPainting(imageDataUrl);
             setPainting(paintingDataUrl);
             
